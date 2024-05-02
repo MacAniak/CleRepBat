@@ -1,0 +1,102 @@
+@echo off
+
+echo.
+echo                     CLEAN - REPAIR - SCANN
+echo.
+echo.
+echo 1 - Check Windows Health only
+echo 2 - Clean and Check Windows Health
+echo 3 - Clean and Check Windows Health and Check Disk REBOOTS
+echo.
+echo.
+set /p eingabe=                  Run:
+IF %eingabe% EQU 1 GOTO check
+IF %eingabe% EQU 2 GOTO clean
+IF %eingabe% EQU 3 GOTO reboot
+echo.
+echo.
+:check
+echo.
+echo.
+echo Check Windows Health only
+echo.
+pause
+color 6
+echo.
+Sfc /scannow
+echo.
+
+
+dism /online /cleanup-image /scanhealth
+echo.
+
+
+dism /online /cleanup-image /checkhealth
+echo.
+
+
+dism /online /cleanup-image /restorehealth
+echo.
+echo                      und immer schön die notepad.exes zählen....
+echo.
+pause
+exit
+
+:clean
+echo.
+echo.
+echo Clean and Check Windows Health
+echo.
+pause
+color 3
+echo.
+cleanmgr C: /lowdisk
+echo.
+Sfc /scannow
+echo.
+
+
+dism /online /cleanup-image /scanhealth
+echo.
+
+
+dism /online /cleanup-image /checkhealth
+echo.
+
+
+dism /online /cleanup-image /restorehealth
+echo.
+echo                      und immer schön die notepad.exes zählen....
+echo.
+pause
+exit
+
+:reboot
+echo.
+echo.
+echo Clean and Check Windows Health and Check Disk REBOOTS
+echo.
+pause
+color D
+echo.
+cleanmgr C: /lowdisk
+echo.
+Sfc /scannow
+echo.
+
+
+dism /online /cleanup-image /scanhealth
+echo.
+
+
+dism /online /cleanup-image /checkhealth
+echo.
+
+
+dism /online /cleanup-image /restorehealth
+echo.
+
+chkdsk C: /f /r
+echo.
+
+shutdown /g /f /t 0
